@@ -6,56 +6,121 @@
 //
 
 import SwiftUI
-import SwiftData
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @AppStorage("chat_username") private var username: String = ""
+    @State private var draftMessage = ""
+    @State private var messages: [ChatMessage] = []
+    @State private var isLoading = false
+    @State private var errorMessage: String?
+    @State private var showNamePrompt = false
+    @State private var showSettings = false
+
+    private let service = ChatService()
 
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
+        NavigationStack {
+            VStack(spacing: 0) {
+                if isLoading {
+                    ProgressView("Loading chat history...")
+                        .padding(.top)
                 }
-                .onDelete(perform: deleteItems)
+
+                if let errorMessage {
+                    Text(errorMessage)
+                        .font(.footnote)
+                        .foregroundStyle(.red)
+                        .padding(.horizontal)
+                }
+
+                List(messages) { message in
+                    ChatMessageRow(message: message, isCurrentUser: message.username == username)
+                        .listRowSeparator(.hidden)
+                        .listRowInsets(EdgeInsets(top: 6, leading: 12, bottom: 6, trailing: 12))
+                }
+                .listStyle(.plain)
+
+                Divider()
+
+                HStack(spacing: 12) {
+                    TextField("Write a message", text: $draftMessage, axis: .vertical)
+                        .textFieldStyle(.roundedBorder)
+                        .lineLimit(1...4)
+
+                    Button("Send") {
+                        Task { await sendMessage() }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(draftMessage.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                }
+                .padding()
             }
+            .navigationTitle("Local Chat Room")
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        Task { await loadMessages() }
+                    } label: {
+                        Label("Refresh", systemImage: "arrow.clockwise")
+                    }
                 }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
+
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        showSettings = true
+                    } label: {
+                        Label("Settings", systemImage: "gearshape")
                     }
                 }
             }
-        } detail: {
-            Text("Select an item")
-        }
-    }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
+            .sheet(isPresented: $showSettings) {
+                SettingsView(username: $username)
             }
+            .sheet(isPresented: $showNamePrompt) {
+                NamePromptView(username: $username) {
+                    showNamePrompt = false
+                }
+            }
+            .task {
+                await loadMessages()
+                if username.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                    showNamePrompt = true
+                }
+            }
+        }
+    }
+
+    private func loadMessages() async {
+        isLoading = true
+        errorMessage = nil
+        do {
+            messages = try await service.fetchMessages()
+        } catch {
+            errorMessage = "Unable to load messages. Make sure the local server is running."
+        }
+        isLoading = false
+    }
+
+    private func sendMessage() async {
+        let trimmedName = username.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedName.isEmpty else {
+            showNamePrompt = true
+            return
+        }
+
+        let trimmedMessage = draftMessage.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedMessage.isEmpty else { return }
+
+        do {
+            let newMessage = try await service.sendMessage(username: trimmedName, text: trimmedMessage)
+            messages.append(newMessage)
+            draftMessage = ""
+        } catch {
+            errorMessage = "Failed to send message."
         }
     }
 }
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
 }

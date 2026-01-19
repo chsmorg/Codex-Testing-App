@@ -9,7 +9,9 @@
 /* Begin PBXBuildFile section */
 		AB06CEF42F1E9D3800539505 /* Codex_Testing_AppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB06CEF32F1E9D3800539505 /* Codex_Testing_AppApp.swift */; };
 		AB06CEF62F1E9D3800539505 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB06CEF52F1E9D3800539505 /* ContentView.swift */; };
-		AB06CEF82F1E9D3800539505 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB06CEF72F1E9D3800539505 /* Item.swift */; };
+		271F744A551E46E893180AF0 /* ChatViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5DEC693A9843959DCDBA51 /* ChatViews.swift */; };
+		D36B5133BC194C828D1F714E /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE836A0E8C34F07921EF8F8 /* ChatMessage.swift */; };
+		E271EC13629D4867A2394266 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08A5900D79241A780181B4F /* ChatService.swift */; };
 		AB06CEFA2F1E9D3900539505 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB06CEF92F1E9D3900539505 /* Assets.xcassets */; };
 		AB06CEFD2F1E9D3900539505 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB06CEFC2F1E9D3900539505 /* Preview Assets.xcassets */; };
 		AB06CF072F1E9D3900539505 /* Codex_Testing_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB06CF062F1E9D3900539505 /* Codex_Testing_AppTests.swift */; };
@@ -38,7 +40,9 @@
 		AB06CEF02F1E9D3800539505 /* Codex Testing App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Codex Testing App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB06CEF32F1E9D3800539505 /* Codex_Testing_AppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Codex_Testing_AppApp.swift; sourceTree = "<group>"; };
 		AB06CEF52F1E9D3800539505 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		AB06CEF72F1E9D3800539505 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		6CE836A0E8C34F07921EF8F8 /* ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
+		AD5DEC693A9843959DCDBA51 /* ChatViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViews.swift; sourceTree = "<group>"; };
+		D08A5900D79241A780181B4F /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
 		AB06CEF92F1E9D3900539505 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AB06CEFC2F1E9D3900539505 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AB06CF022F1E9D3900539505 /* Codex Testing AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Codex Testing AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -96,9 +100,11 @@
 		AB06CEF22F1E9D3800539505 /* Codex Testing App */ = {
 			isa = PBXGroup;
 			children = (
+				6CE836A0E8C34F07921EF8F8 /* ChatMessage.swift */,
+				D08A5900D79241A780181B4F /* ChatService.swift */,
+				AD5DEC693A9843959DCDBA51 /* ChatViews.swift */,
 				AB06CEF32F1E9D3800539505 /* Codex_Testing_AppApp.swift */,
 				AB06CEF52F1E9D3800539505 /* ContentView.swift */,
-				AB06CEF72F1E9D3800539505 /* Item.swift */,
 				AB06CEF92F1E9D3900539505 /* Assets.xcassets */,
 				AB06CEFB2F1E9D3900539505 /* Preview Content */,
 			);
@@ -260,9 +266,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				271F744A551E46E893180AF0 /* ChatViews.swift in Sources */,
+				D36B5133BC194C828D1F714E /* ChatMessage.swift in Sources */,
 				AB06CEF62F1E9D3800539505 /* ContentView.swift in Sources */,
-				AB06CEF82F1E9D3800539505 /* Item.swift in Sources */,
 				AB06CEF42F1E9D3800539505 /* Codex_Testing_AppApp.swift in Sources */,
+				E271EC13629D4867A2394266 /* ChatService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
